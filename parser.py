@@ -46,6 +46,14 @@ class MapParser:
             if self.start is None or self.end is None:
                 raise ValueError("Map missing either start_hub or end_hub")
 
+            connected_zones = set()
+            for connection_pair in self.connections.keys():
+                connected_zones.update(connection_pair)
+
+            for zone_name in self.zones:
+                if zone_name not in connected_zones:
+                    raise ValueError(f"Parsing Error: Zone '{zone_name}' is isolated and has no connections.")
+
             return NetworkMap(
                 self.drones_number, self.start, self.end,
                 self.zones, self.connections
@@ -167,6 +175,8 @@ class MapParser:
 
             if key not in allowed_keys:
                 raise ValueError(f"Line {index}: unknown metadata key '{key}'")
+            if key in metadata:
+                raise ValueError(f"Line {index}: duplicate metadata key '{key}'")
             if key == "zone" and value not in allowed_zones:
                 raise ValueError(f"Line {index}: unknown zone type '{value}'")
             if key in ("max_drones", "max_link_capacity"):

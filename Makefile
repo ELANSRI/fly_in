@@ -1,5 +1,5 @@
 install:
-	pip install pyglet mypy flake8
+	pip install mypy flake8
 
 run:
 	python3 main.py
