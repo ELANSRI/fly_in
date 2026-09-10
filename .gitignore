@@ -2,7 +2,10 @@ __pycache__/
 *.pyc
 .mypy_cache/
 .pytest_cache/
-.venv/
-.flake8/
 venv/
 env/
+.venv/
+*.egg-info/
+dist/
+build/
+.DS_Store
