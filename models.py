@@ -14,6 +14,7 @@ class Zone:
         color (Optional[str]): Color for visual representation.
         max_drones (int): Maximum drones that can occupy this zone.
     """
+
     name: str
     x: int
     y: int
@@ -39,6 +40,7 @@ class Drone:
         drone_id (int): Unique identifier for the drone.
         path (list[str]): The calculated path for the drone.
     """
+
     id: int
     path: list[str] = field(default_factory=list)
 
@@ -54,6 +56,7 @@ class NetworkMap:
         zones (Dict[str, Zone]): Mapping of zone names to Zone instances.
         connections (Dict[FrozenSet[str], int]): Mapping of zone pairs to cap.
     """
+
     nb_drones: int
     start_hub: str
     end_hub: str

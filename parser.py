@@ -22,7 +22,7 @@ class MapParser:
         """Parses the config file line by line with strict validation."""
         nb_drones_flag: bool = True
         try:
-            with open(self.filename, 'r', encoding='utf-8') as file:
+            with open(self.filename, "r", encoding="utf-8") as file:
                 for index, raw_line in enumerate(file, 1):
                     line: str = raw_line.strip()
                     if not line or line.startswith("#"):
@@ -30,7 +30,8 @@ class MapParser:
 
                     if line.startswith("nb_drones"):
                         if not nb_drones_flag:
-                            raise ValueError(f"Line {index}: nb_drones must be first")
+                            raise ValueError(f"Line {index}: nb_drones must "
+                                             f"be first")
                         self._parse_nb_drones(line, index)
                         nb_drones_flag = False
                         continue
@@ -46,17 +47,20 @@ class MapParser:
             if self.start is None or self.end is None:
                 raise ValueError("Map missing either start_hub or end_hub")
 
-            connected_zones = set()
+            connected_zones: Set[str] = set()
             for connection_pair in self.connections.keys():
                 connected_zones.update(connection_pair)
 
             for zone_name in self.zones:
                 if zone_name not in connected_zones:
-                    raise ValueError(f"Parsing Error: Zone '{zone_name}' is isolated and has no connections.")
+                    raise ValueError(
+                        f"Parsing Error: Zone '{zone_name}' is isolated "
+                        f"and has no connections."
+                    )
 
             return NetworkMap(
-                self.drones_number, self.start, self.end,
-                self.zones, self.connections
+                self.drones_number, self.start,
+                self.end, self.zones, self.connections
             )
         except Exception as e:
             print(f"[ERROR] {e}")
@@ -82,7 +86,7 @@ class MapParser:
         if "[" in content:
             if not content.endswith("]"):
                 raise ValueError(f"Line {index}: invalid metadata format")
-            main, meta = content.split('[', 1)
+            main, meta = content.split("[", 1)
             metadata = self._parse_metadata("[" + meta, index)
             main = main.strip()
 
@@ -92,7 +96,8 @@ class MapParser:
 
         name, x, y = parts
         if "-" in name or " " in name:
-            raise ValueError(f"Line {index}: name cannot contain dash or space")
+            raise ValueError(f"Line {index}: name cannot"
+                             f" contain dash or space")
 
         try:
             x_int, y_int = int(x), int(y)
@@ -121,10 +126,12 @@ class MapParser:
             max_d = self.drones_number
 
         self.zones[name] = Zone(
-            name, x_int, y_int,
+            name,
+            x_int,
+            y_int,
             metadata.get("zone", "normal"),
             metadata.get("color"),
-            max_d
+            max_d,
         )
 
     def _parse_connection(self, line: str, index: int) -> None:
@@ -161,10 +168,12 @@ class MapParser:
             raise ValueError(f"Line {index}: max_link_capacity must be > 0")
         self.connections[frozen_obj] = cap
 
-    def _parse_metadata(self, line: str, index: int) -> dict:
+    def _parse_metadata(self, line: str, index: int) -> dict[str, Any]:
         """Extracts individual configuration attributes inside brackets."""
-        allowed_keys: Set[str] = {"zone", "color", "max_drones", "max_link_capacity"}
-        allowed_zones: Set[str] = {"normal", "blocked", "priority", "restricted"}
+        allowed_keys: Set[str] = {"zone", "color", "max_drones",
+                                  "max_link_capacity"}
+        allowed_zones: Set[str] = {"normal", "blocked",
+                                   "priority", "restricted"}
         metadata: Dict[str, Any] = {}
 
         for item in line.strip("[]").split():
@@ -176,7 +185,8 @@ class MapParser:
             if key not in allowed_keys:
                 raise ValueError(f"Line {index}: unknown metadata key '{key}'")
             if key in metadata:
-                raise ValueError(f"Line {index}: duplicate metadata key '{key}'")
+                raise ValueError(f"Line {index}: duplicate"
+                                 f" metadata key '{key}'")
             if key == "zone" and value not in allowed_zones:
                 raise ValueError(f"Line {index}: unknown zone type '{value}'")
             if key in ("max_drones", "max_link_capacity"):
