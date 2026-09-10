@@ -2,5 +2,7 @@ __pycache__/
 *.pyc
 .mypy_cache/
 .pytest_cache/
+.venv/
+.flake8/
 venv/
 env/
