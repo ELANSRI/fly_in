@@ -40,7 +40,7 @@ All project environment setups are fully automated using the provided `Makefile`
 Alternatively, invoke the module directly via python:
 
 ```bash
-    python3 fly-in.py maps/config.txt
+    python3 main.py maps/config.txt
 ```
 
 
@@ -123,11 +123,6 @@ restricted zones demand exactly 2 turns to enter. To prevent mid-flight collisio
 
 - Multi-Agent Path Finding (MAPF): Referenced academic concepts concerning space-time reservation maps and prioritized sequential path planning.
 
-- Pyglet Framework API: Utilized for event-loop structuring and building low-overhead graphics rendering layers.
 
 - AI Tool Utilization Statement: Large Language Models (LLMs) were utilized during development to generate strict Python type annotations, verify structural compliance with mandatory static mypy safety flags, optimize the reservation matching logic loops, and draft comprehensive documentation templates.
 
-
-## V. Additional sections may be required depending on the project
-
-Graphical User Interface (GUI): A hardware-accelerated interactive playback display built using Pyglet. The GUI visualizes network node positions, animates drones traversing connection lines over time, and dynamically tracks real-time occupancy. Furthermore, the system parses and renders ambient colors based on the optional color metadata attribute assigned to specific zones within the map configurations.

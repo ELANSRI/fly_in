@@ -1,11 +1,12 @@
+MAP ?= maps/easy/01_linear_path.txt
 install:
 	pip install mypy flake8
 
 run:
-	python3 main.py
+	python3 main.py $(MAP)
 
 debug:
-	pdb main.py
+	python3 -m pdb main.py $(MAP)
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -r {} +
